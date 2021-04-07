@@ -54,10 +54,10 @@ class CatCad extends React.Component{
         return(
             <View style={styles.styleBotao}>
                 <Botao label={"Salvar"} onPress={ async ()=> {
-                    if(catForm.title === "" && catForm.description === ""){
+                    if(catForm.title === ""){
                         return Alert.alert(
                             'Alerta',
-                            'Nome e descrição não podem ser nulos!!',
+                            'Nome não pode ser nulo!!',
                             [{
                                 text: 'OK',
                                 onPress: () =>{
@@ -88,7 +88,7 @@ class CatCad extends React.Component{
                     <Input labelInput="Nome:">
                         <TextInput 
                             style={styles.textInput} 
-                            placeholder="Entre com o nome do produto aqui"
+                            placeholder="Entre com o nome da categoria aqui"
                             value={catForm.title}
                             onChangeText={valor => setField('title', valor)}
                         />                    
@@ -96,7 +96,7 @@ class CatCad extends React.Component{
                     <Input labelInput="Descrição:">
                         <TextInput 
                             style={styles.textInput} 
-                            placeholder="Entre com a descrição do produto aqui"
+                            placeholder="Entre com a descrição da categoria aqui"
                             value={catForm.description}
                             onChangeText={valor => setField('description', valor)}
                         />
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#7E39FB'
     },
     styleBotao:{
-        marginTop:'20%',
+        marginTop:5,
         flex:0.1,
         left: 0,
         right: 0,

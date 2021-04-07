@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, TextInput, StyleSheet, Button, ActivityIndicator} from 'react-native';
+import {View, TextInput, StyleSheet, Alert, ActivityIndicator} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 //import firebase from 'firebase';
@@ -54,10 +54,10 @@ class CatMenuCad extends React.Component{
         return(
             <View style={styles.styleBotao}>
                 <Botao label={"Salvar"} onPress={ async ()=> {
-                    if(catForm.title === "" && catForm.description === ""){
+                    if(catForm.title === ""){
                         return Alert.alert(
                             'Alerta',
-                            'Nome e descrição não podem ser nulos!!',
+                            'Nome não pode ser nulo!!',
                             [{
                                 text: 'OK',
                                 onPress: () =>{
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#7E39FB'
     },
     styleBotao:{
-        marginTop:'20%',
+        marginTop:5,
         flex:0.1,
         left: 0,
         right: 0,

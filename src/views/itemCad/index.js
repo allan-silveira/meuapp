@@ -56,10 +56,10 @@ class ItemCad extends React.Component{
         return(
             <View style={styles.styleBotao}>
                 <Botao label={"Salvar"} onPress={ async ()=> {
-                    if(itemForm.title === "" && itemForm.description === ""){
+                    if(itemForm.title === ""){
                         return Alert.alert(
                             'Alerta',
-                            'Nome e descrição não podem ser nulos!!',
+                            'Nome não pode ser nulo!!',
                             [{
                                 text: 'OK',
                                 onPress: () =>{
@@ -141,7 +141,7 @@ class ItemCad extends React.Component{
                     <Input labelInput="Nome:">
                         <TextInput 
                             style={styles.textInput} 
-                            placeholder="Entre com o nome do produto aqui"
+                            placeholder="Entre com o nome do item aqui"
                             value={itemForm.title}
                             onChangeText={valor => itemsetField('title', valor)}
                         />                    
@@ -149,7 +149,7 @@ class ItemCad extends React.Component{
                     <Input labelInput="Descrição:">
                         <TextInput 
                             style={styles.textInput} 
-                            placeholder="Entre com a descrição do produto aqui"
+                            placeholder="Entre com a descrição do item aqui"
                             value={itemForm.description}
                             onChangeText={valor => itemsetField('description', valor)}
                         />
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#7E39FB'
     },
     styleBotao:{
-        marginTop:'20%',
+        marginTop: 5,
         flex:0.1,
         left: 0,
         right: 0,

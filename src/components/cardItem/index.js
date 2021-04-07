@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
     },
     text:{
         marginLeft: 10,
-        width: '75%',
         borderBottomWidth: 1,
         borderBottomColor: 'black',
         fontSize: 16,
