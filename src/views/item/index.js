@@ -28,7 +28,7 @@ class Item extends React.Component{
                     data={this.props.itens}
                     renderItem={({item}) => {
                         return( 
-                            item.isLast ?
+                            item.nulo ?
                                 <View style={{paddingBottom: '30%'}}></View>
                             :
                             <CardItem 

@@ -29,7 +29,7 @@ class Home extends React.Component{
                     data={this.props.categorias}
                     renderItem={({item}) => {
                         return(
-                            item.isLast ?
+                            item.nulo ?
                                 <View style={{paddingBottom: '30%'}}></View>
                             :
                             <CardCat 
