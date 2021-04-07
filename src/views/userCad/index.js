@@ -11,8 +11,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 Icon.loadFont();
 
+import {connect} from 'react-redux';
+import {processCad} from '../../actions';
 
-export default class userCad extends React.Component{
+class userCad extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -38,33 +40,29 @@ export default class userCad extends React.Component{
 
     processCad(){
         this.setState({ isLoading: true});
-        
         const {email, senha, senha2} = this.state;
-        
-        const CadUserSuccess = user => {
-            this.setState({ message: "Sucesso!"});
-            {this.cleanInput()};            
-            this.props.navigation.navigate("Login");
-        }
-
-        const CadUserFailed = error => {
-            this.setState({ message: this.getMessageByError(error.code)});
-        }
-
         if(senha == senha2){
-            firebase
-             .auth()
-             .createUserWithEmailAndPassword(email, senha)
-             .then(CadUserSuccess)
-             .catch(CadUserFailed)
-             .then(() => {
-                this.setState({ isLoading: false});
+            this.props.processCad({email, senha})
+            .then( user => {
+                if(user){
+                    {this.cleanInput()};
+                    this.props.navigation.replace('Login');
+                }else{
+                    this.setState({
+                        isLoading: false,
+                        message: ""
+                    })
+                }
             })
-        }else{
+            .catch(error => {
+                this.setState({ 
+                    isLoading: false,
+                    message: this.getMessageByError(error.code)});
+            })}
+        else{
             this.setState({ message: "Senhas não correspondem!"});
             this.setState({ isLoading: false});
         }
-    
     }
 
     getMessageByError(code){
@@ -220,3 +218,5 @@ const styles = StyleSheet.create({
         right: 10
     }
 })
+
+export default connect(null, {processCad})(userCad);

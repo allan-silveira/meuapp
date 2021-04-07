@@ -16,15 +16,16 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         backgroundColor: '#E4E4E4',
         elevation: 5,
-        width: 90,
-        height: 90,
+        width: 70,
+        height: 70,
         borderRadius: 100
     },
     textBotao:{
         fontWeight:'bold',
         fontSize: 65,
         color: '#DEB40B',
-        textAlign: 'center',
+        top: -10,
+        textAlign: 'center'
     }
 });
 

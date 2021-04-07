@@ -37,7 +37,7 @@ function CustomDrawerContent(props){
         <DrawerContentScrollView {...props}>
             <ProfileDrawer {...props} />
             <DrawerItemList {...props} />
-            <DrawerItem label="Logout" onPress={()=>{props.navigation.popToTop()}} labelStyle={ {color:"white", fontSize: 18}} icon={()=> <Icon name="sign-out" size={18}  color="black"/>}/>
+            <DrawerItem label="Logout" onPress={()=>{props.navigation.navigate("Login")}} labelStyle={ {color:"white", fontSize: 18}} icon={()=> <Icon name="sign-out" size={18}  color="black"/>}/>
         </DrawerContentScrollView>
     )
 }

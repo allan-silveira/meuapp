@@ -6,31 +6,34 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont();
 
 const CardItem = (props) => {
-    const {onPress, navigation, itemImg, itemNome, itemDesc} = props;
+    const {onPress, navigation, itemImg, itemNome, itemDesc, deleteItem} = props;
     return(
-        <TouchableOpacity style={styles.maxContainer} onPress={onPress}> 
+        <View style={styles.maxContainer} onPress={onPress}> 
             <View>
-                <Image source={require("../../../img/racao.jpg")} style={styles.imageStyle}/>    
+                <Image source={{uri:itemImg}} style={styles.imageStyle}/>    
             </View>
             <View>
                 <View style={styles.container}>
-                    <View style={{flex:1}}>
+                    <View style={{flex: 1}}>
                         <Text style={{fontSize: 18}}>{itemNome}</Text> 
-                    </View>  
+                    </View> 
+                    
                 </View>
-                <Text style={styles.text}>{itemDesc}</Text>
+                
+                <Text style={styles.text}>{itemDesc}</Text> 
+                
                 <View style={styles.containerIcon}>
                     <View style={{flex:1, flexDirection: 'row'}}>    
                         <TouchableOpacity>
-                            <Icon name="pencil" size={25}  color="#7E39FB" onPress={()=>navigation.navigate('ItemAlt')}/>
+                            <Icon name="pencil" size={25}  color="#7E39FB" onPress={navigation}/>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <Icon name="trash" size={25}  color="#7E39FB" style={{marginLeft:20}}/>
+                            <Icon name="trash" size={25}  color="#7E39FB"  onPress={deleteItem} style={{marginLeft:20}}/>
                         </TouchableOpacity>
                     </View>
                 </View>    
             </View>
-        </TouchableOpacity>
+        </View>
     );
 };
 
@@ -44,7 +47,7 @@ const styles = StyleSheet.create({
         flexDirection:'row'
     },
     container:{
-        flexDirection: 'row-reverse',
+        flex: 1,
         alignContent: 'space-between',
         fontSize: 18,
         marginTop: 10,
@@ -59,7 +62,8 @@ const styles = StyleSheet.create({
         marginRight: 10    
     },
     text:{
-        margin:10,
+        marginLeft: 10,
+        width: '75%',
         borderBottomWidth: 1,
         borderBottomColor: 'black',
         fontSize: 16,

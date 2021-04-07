@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, TextInput, StyleSheet, Button} from 'react-native';
+import {View, TextInput, StyleSheet, Button, ActivityIndicator} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 //import firebase from 'firebase';
@@ -11,16 +11,32 @@ import Botao from '../../components/botao';
 import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont();
 
-export default class CatMenuCad extends React.Component{
+import { connect } from 'react-redux';
+import { setField, saveCat, resetForm, setAllFields } from '../../actions';
+
+class CatMenuCad extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            name: "",
-            descricao: "",
+            isLoading: false,
+            pageTitle: ''
+        }
+    }
+
+    componentDidMount(){
+        const {route, setAllFields, resetForm} = this.props;
+        const { params } = route;
+
+        if(params && params.catToEdit){
+            setAllFields(params.catToEdit)
+            this.setState({pageTitle: params.catToEdit.title})
+        }else{
+            this.setState({pageTitle: 'Nova categoria'})
+            resetForm();
         }
     }
     
-   
+    
 
     onChangeHandler(field, valor){
         this.setState({
@@ -29,19 +45,42 @@ export default class CatMenuCad extends React.Component{
     }
 
     processCad(){
-        this.props.navigation.navigate("Home");
+        this.props.navigation.pop();
     }
 
-    renderButton() {
+    renderButton(catForm, saveCat) {
         if(this.state.isLoading)
             return <ActivityIndicator/>
         return(
             <View style={styles.styleBotao}>
-                <Botao label={"Salvar"} onPress={()=> {this.processCad()}}/>                
+                <Botao label={"Salvar"} onPress={ async ()=> {
+                    if(catForm.title === "" && catForm.description === ""){
+                        return Alert.alert(
+                            'Alerta',
+                            'Nome e descrição não podem ser nulos!!',
+                            [{
+                                text: 'OK',
+                                onPress: () =>{
+                                }
+                            }]
+                        )
+                    }
+                    this.setState({isLoading: true})
+                    try{
+                        await saveCat(catForm);
+                        this.props.navigation.goBack();   
+                    }catch(error){
+                        Alert.alert('Erro', error.message);
+                    }finally{
+                        this.setState({isLoading: false});
+                    }                                        
+                }}
+                />                
             </View>
         )
     }
     render(){
+        const {catForm, setField, saveCat, navigation} = this.props;
         return(
             <KeyboardAwareScrollView style={{backgroundColor: '#7E39FB'}}>
                 <View style={styles.fundo}>
@@ -50,19 +89,24 @@ export default class CatMenuCad extends React.Component{
                         <TextInput 
                             style={styles.textInput} 
                             placeholder="Entre com o nome do produto aqui"
-                            value={this.state.email}
-                            onChangeText={valor => {this.onChangeHandler('nome', valor)}}
+                            value={catForm.title}
+                            onChangeText={valor => setField('title', valor)}
                         />                    
                     </Input>
                     <Input labelInput="Descrição:">
                         <TextInput 
                             style={styles.textInput} 
                             placeholder="Entre com a descrição do produto aqui"
-                            value={this.state.descricao}
-                            onChangeText={valor => {this.onChangeHandler('descricao', valor)}}
+                            value={catForm.description}
+                            onChangeText={valor => setField('description', valor)}
                         />
                     </Input>
-                    {this.renderButton()}
+                    {
+                        this.state.isLoading ?
+                            <ActivityIndicator/>
+                        :
+                        this.renderButton(catForm, saveCat)
+                    }
                 </View>
             </KeyboardAwareScrollView>
         )
@@ -93,3 +137,18 @@ const styles = StyleSheet.create({
         alignItems:'center',
     }
 })
+
+const mapStateToProps = (state) => {
+    return ({
+        catForm: state.catForm
+    })
+}
+
+const mapDispatchToProps = {
+    setField,
+    saveCat,
+    resetForm,
+    setAllFields
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CatMenuCad);

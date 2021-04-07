@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont();
 
 const CardCat = (props) => {
-    const {onPress, navigation, catItemNum, catNome, catDesc} = props;
+    const {onPress, editNavigation, catItemNum, catNome, catDesc, deleteCat} = props;
     return(
         <TouchableOpacity style={styles.maxContainer} onPress={onPress}>
             <View style={styles.container}>
@@ -26,10 +26,10 @@ const CardCat = (props) => {
                 </View>
                 <View style={{flex:1, flexDirection: 'row'}}>    
                     <TouchableOpacity>
-                        <Icon name="pencil" size={25}  color="#7E39FB" onPress={()=> navigation.navigate('CatAlt')}/>
+                        <Icon name="pencil" size={25}  color="#7E39FB" onPress={editNavigation}/>
                     </TouchableOpacity>
                     <TouchableOpacity>
-                        <Icon name="trash" size={25}  color="#7E39FB" style={{marginLeft:20}}/>
+                        <Icon name="trash" size={25}  color="#7E39FB" onPress={deleteCat} style={{marginLeft:20}}/>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -10,7 +10,10 @@ import Botao from '../../components/botao';
 import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont();
 
-export default class LoginScreen extends React.Component{
+import {connect} from 'react-redux';
+import {processLogin} from '../../actions';
+
+class LoginScreen extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -24,6 +27,23 @@ export default class LoginScreen extends React.Component{
         }
     }
 
+    componentDidMount() {
+        if(! firebase.apps.length){
+            var firebaseConfig = {
+                apiKey: "AIzaSyDGcR9PP66tM8FbFsmoJEZoXtmk3Rj5dQA",
+                authDomain: "gerseries-5ec78.firebaseapp.com",
+                databaseURL: "https://gerseries-5ec78-default-rtdb.firebaseio.com",
+                projectId: "gerseries-5ec78",
+                storageBucket: "gerseries-5ec78.appspot.com",
+                messagingSenderId: "392940301651",
+                appId: "1:392940301651:web:2075e16229164138d845a6",
+                measurementId: "G-N6WEQC7HDN"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+        }
+    }
+
     onChangeHandler(field, valor){
         this.setState({
             [field]: valor
@@ -32,24 +52,23 @@ export default class LoginScreen extends React.Component{
 
     processLogin(){
         this.setState({ isLoading: true});
-        
         const {email, password} = this.state;
-        
-        const loginUserSuccess = user => {
-            this.setState({ message: "Sucesso!"});
-            {this.cleanInput()};
-            this.props.navigation.navigate("Menu");
-        }
-
-        firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(loginUserSuccess)
-        .catch(error => {
-            this.setState({ message: this.getMessageByError(error.code)});
+        this.props.processLogin({email, password})
+        .then( user => {
+            if(user){
+                {this.cleanInput()};
+                this.props.navigation.replace('Menu');
+            }else{
+                this.setState({
+                    isLoading: false,
+                    message: ""
+                })
+            }
         })
-        .then(() => {
-            this.setState({ isLoading: false});
+        .catch(error => {
+            this.setState({ 
+                isLoading: false,
+                message: this.getMessageByError(error.code)});
         })
     }
 
@@ -193,3 +212,5 @@ const styles = StyleSheet.create({
         right: 10 
     }
 })
+
+export default connect(null, {processLogin})(LoginScreen);
